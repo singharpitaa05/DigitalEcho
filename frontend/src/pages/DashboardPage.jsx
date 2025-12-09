@@ -2,17 +2,18 @@
 
 // Main dashboard page with overview and quick actions
 import {
-    Activity,
-    AlertCircle,
-    FileText,
-    LogOut,
-    Mail,
-    Phone,
-    Search,
-    Settings,
-    Shield,
-    TrendingUp,
-    User
+  Activity,
+  AlertCircle,
+  FileText,
+  History,
+  LogOut,
+  Mail,
+  Phone,
+  Search,
+  Settings,
+  Shield,
+  TrendingUp,
+  User
 } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -61,10 +62,10 @@ const DashboardPage = () => {
     },
     {
       icon: <FileText className="w-6 h-6" />,
-      title: 'Metadata Scan',
-      description: 'Extract hidden data from your files',
+      title: 'Password Checker',
+      description: 'Test your password strength',
       color: 'bg-orange-500',
-      path: '/scan/metadata'
+      path: '/scan/password'
     }
   ];
 
@@ -92,6 +93,13 @@ const DashboardPage = () => {
               <span className="ml-2 text-xl font-bold text-gray-900">Digital Footprint Scanner</span>
             </div>
             <div className="flex items-center gap-4">
+              <Link
+                to="/scan-history"
+                className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 transition-colors"
+              >
+                <History className="w-5 h-5" />
+                <span className="hidden sm:inline">History</span>
+              </Link>
               <Link
                 to="/profile"
                 className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 transition-colors"
@@ -205,16 +213,41 @@ const DashboardPage = () => {
 
         {/* Recent Activity Section */}
         <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Recent Activity</h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-bold text-gray-900">Recent Activity</h2>
+            {user?.totalScans > 0 && (
+              <button
+                onClick={() => navigate('/scan-history')}
+                className="flex items-center gap-2 text-indigo-600 hover:text-indigo-700 font-medium text-sm"
+              >
+                <History className="w-4 h-4" />
+                View All History
+              </button>
+            )}
+          </div>
           <div className="text-center py-12">
             <Activity className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500 mb-4">No recent scans found</p>
-            <button
-              onClick={() => navigate('/scan/username')}
-              className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
-            >
-              Start Your First Scan
-            </button>
+            <p className="text-gray-500 mb-4">
+              {user?.totalScans > 0 
+                ? 'View your scan history to see past results'
+                : 'No recent scans found'}
+            </p>
+            <div className="flex gap-3 justify-center">
+              <button
+                onClick={() => navigate('/scan/username')}
+                className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+              >
+                Start Your First Scan
+              </button>
+              {user?.totalScans > 0 && (
+                <button
+                  onClick={() => navigate('/scan-history')}
+                  className="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300 transition-colors"
+                >
+                  View History
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
