@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
 import authRoutes from './routes/auth.routes.js';
+import scanRoutes from './routes/scan.routes.js';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ mongoose.connect(process.env.MONGODB_URI)
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/scans', scanRoutes);
 
 // Health check route
 app.get('/health', (req, res) => {
